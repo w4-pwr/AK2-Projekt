@@ -196,9 +196,23 @@ static void put4Command (const struct lcdDataStruct *lcd, unsigned char command)
   delay (35) ; // mS
 
 
+// 4-bit mode?
+//	OK. This is a PIG and it's not at all obvious from the documentation I had,
+//	so I guess some others have worked through either with better documentation
+//	or more trial and error... Anyway here goes:
+//
+//	It seems that the controller needs to see the FUNC command at least 3 times
+//	consecutively - in 8-bit mode. If you're only using 8-bit mode, then it appears
+//	that you can get away with one func-set, however I'd not rely on it...
+//
+//	So to set 4-bit mode, you need to send the commands one nibble at a time,
+//	the same three times, but send the command to set it into 8-bit mode those
+//	three times, then send a final 4th command to set it into 4-bit mode, and only
+//	then can you flip the switch for the rest of the library to work in 4-bit
+//	mode which sends the commands as 2 x 4-bit values.
 
-
-
+  if (bits == 4)
+  {
     func = LCD_FUNC | LCD_FUNC_DL ;			// Set 8-bit mode 3 times
     put4Command (lcd, func >> 4) ; delay (35) ;
     put4Command (lcd, func >> 4) ; delay (35) ;
@@ -206,6 +220,14 @@ static void put4Command (const struct lcdDataStruct *lcd, unsigned char command)
     func = LCD_FUNC ;					// 4th set: 4-bit mode
     put4Command (lcd, func >> 4) ; delay (35) ;
     lcd->bits = 4 ;
+  }
+  else
+  {
+    func = LCD_FUNC | LCD_FUNC_DL ;
+    putCommand  (lcd, func     ) ; delay (35) ;
+    putCommand  (lcd, func     ) ; delay (35) ;
+    putCommand  (lcd, func     ) ; delay (35) ;
+  }
 
   if (lcd->rows > 1)
   {
