@@ -1,8 +1,6 @@
 # AK2Projekt
 
-https://github.com/wdalmut/libgps
-
-w lcd.c jest główny program
+Główny kod aplikacji znajudje się w `lcd.c`
 
 ### Schemat podłączenia
 
@@ -19,8 +17,24 @@ w lcd.c jest główny program
 #define LCD_D7  4               //Data pin 7
 ```
 
+### Podłączenie GPS
+
+```
+//RPI-------------->GPS
+//3.3V------------->Vcc
+//RX--------------->Tx
+//TX--------------->Rx
+//GND-------------->Gnd
+```
+
 ### Kompilacja i uruchomienie
 ```
-gcc lcd.c -o lcd -lwiringPi -lwiringPiDev
+gcc lcd.c -o lcd -lwiringPi -lwiringPiDev -lgps -lm
 ./lcd
 ```
+
+### Przydatne linki
+
+1. http://walterdalmut.com/2013/11/23/raspberry-pi-c-gps-nmea-library-global-positioning-system/
+2. https://github.com/wdalmut/libgps
+3. http://stackoverflow.com/questions/32000328/libgps-c-code-example
