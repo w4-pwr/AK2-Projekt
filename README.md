@@ -38,6 +38,9 @@ po poprawnym podłączneiu jesteśmy w stanie odczytywać pozycję z GPS za pomo
 gcc lcd.c -o lcd -lwiringPi -lwiringPiDev -lgps -lm
 ./lcd
 ```
+### GPS
+Długośc fali, 19,029 cm
+Częstotliwość 15.75,42MHz
 
 ### Przydatne linki
 
