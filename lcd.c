@@ -1,7 +1,9 @@
 #include <wiringPi.h>           //WiringPi headers
 #include <lcd.h>                //LCD headers from WiringPi
 #include <stdio.h>              //Needed for the printf function below
- 
+#include <unistd.h>
+#include <string.h>
+#include <wiringSerial.h>
 //gcc lcd.c -o lcd -lwiringPi -lwiringPiDev
 
 
@@ -16,70 +18,93 @@
 // ------------------------ GPS
 
 
-
 //RPI-------------->GPS
 //RX--------------->Tx
 //TX--------------->Rx
 //GND-------------->Gnd
 
 
-//oczekiwanie na sygnal
-//1 - czeka
-//0 - znalazl sygnal
-int waitingForSingal(){
+ int lcd;
 
-return 0; 
+void parseNmea(char Buffer[255]){
+	// printf("%s\n", Buffer);
 
-} 
+if(Buffer[0] == '$')
+	{
+		if (memcmp(Buffer+1,"GPGLL",5) == 0)
+		{
+			char *token = strtok(Buffer+6,",");
+			char *lat;
+			int i = 0;
+			while(token != NULL)
+			{
+				//lcdClear(lcd); 
+				switch(i)
+				{
+				case 0:
+					printf(" Lat: %s ", token);
+					lcdPosition(lcd,0,0); 
+					lcdPuts(lcd, "Lat: ");
 
+					lcdPuts(lcd, token);
+					break;
+				case 1:
+					printf("(%s)\n", token);
+					// lcdPuts(lcd, token);
+					break;
+				case 2:
+					printf(" Lng: %s ", token);
+					lcdPosition(lcd,0,1); 
+					lcdPuts(lcd, "Lng: "); 
+					lcdPuts(lcd, token);
+					break;		
+				case 3:
+				printf("(%s)\n\n", token);
+				// lcdPuts(lcd, token);
+					break;
+				default:
+					printf("----------- BLAD!\n");
+					break;
+				}
+				i++;
+				token = strtok(NULL,",");
+			}
+			printf("\n");
+		}
+	}
 
-//pobranie szerokosci z GPS
-float getLatitude(){
-return 51.4234;
 }
 
-//pobranie dlugosci z GPS
-float getLongitude(){
-return 17.4333;
-}
 
-void testGPS(){
+void startTracking(){
 	char gps[65];
 	int fd,flag=0; //uchwyt dla UART
 	char arr[]="$GPGGA";
 
 	if((fd = serialOpen("/dev/ttyAMA0",9600)) < 0)
 	{
-		fprintf(stderr,"Nie udalo sie podlaczyc do UART: %s \n", strerror(errno));
+		printf("%s\n", "Nie udalo sie podlaczyc do UART");
+		return;
 	} else {
 		printf("Podlaczono UART\n");
 	}
+	int i = 0;
+	char buffer[255];
 	while(1)
 	{
-		int i=0;
 		int c;
-		if(c=serialGetchar(fd)==13||10)
+		if(c=serialGetchar(fd))
 		{
-			for(i=0; i<6; i++)
-			{
-				if(serialGetchar(fd) == arr[i])
-					flag++;
+			if(c != '\n'){
+				buffer[i] = c;
+			} else {
+				buffer[i] = '\0';
+				parseNmea(buffer);
+				i = -1;
 			}
+			i++;
 		}
-		if(flag==6)
-		{
-			flag=0;
-			for(i=0; i<=65; i++)
-			gps[i] = serialGetchar(fd);
-		}
-		printf("%d",gps);
-
-}
-
-//inicjalizacja GPS
-void initGPS(){
-
-
+	}
 }
 
 // ------------------------ LCD 
@@ -93,18 +118,11 @@ int initLCD(){
     return lcd;
 }
 
-//wyswietlenie napisu oczekiwania
-void displayWaiting(int lcd){
-	lcdClear(lcd); 
-	lcdPosition(lcd,0,0);
-	lcdPuts(lcd, "Czekanie na sygnal");   
-}
-
 //wyswietlanie wspolrzednych na wyswieltaczu
 void displayCoords(int lcd, float lat, float lng){
 	lcdClear(lcd); 
 	lcdPuts(lcd, "Lat: ");
-	lcdPosition(lcd,1,0);   
+	lcdPosition(lcd,0,1);   
 	lcdPuts(lcd, "Lng: ");
 }
 
@@ -120,23 +138,13 @@ void saveCoords(float lat, float lng){
 	fclose(f);
 }
 
-
 //-------------------------------------------------------------------------------
- 
+
 int main()
 {
   	//inicjalizacja 
     wiringPiSetup();
- 	int lcd = initLCD();
- 	int gps = initGPS();
-
- 	int hasSignal = waitingForSingal();
- 	while(hasSignal){
- 		float lat = getLatitude();
- 		float lng = getLongitude();
- 		displayCoords(lcd, lat, lng);
- 		saveCoords(lat, lng);
- 	}
-  
+ 	lcd = initLCD();
+ 	startTracking();
     getchar();
 }
