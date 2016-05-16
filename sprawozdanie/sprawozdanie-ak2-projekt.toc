@@ -1,0 +1,6 @@
+\contentsline {section}{\numberline {1}Wst\IeC {\k e}p}{2}
+\contentsline {subsection}{\numberline {1.1}Cel projektu}{2}
+\contentsline {subsection}{\numberline {1.2}Zakres projektu}{2}
+\contentsline {section}{\numberline {2}Sformu\IeC {\l }owanie problemu}{2}
+\contentsline {subsection}{\numberline {2.1}Analiza i ocena jako\IeC {\'s}ci}{2}
+\contentsline {section}{\numberline {3}Podsumowanie}{2}
