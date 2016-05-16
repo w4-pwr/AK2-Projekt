@@ -27,11 +27,20 @@ Główny kod aplikacji znajudje się w `lcd.c`
 //GND-------------->Gnd
 ```
 
+po poprawnym podłączneiu jesteśmy w stanie odczytywać pozycję z GPS za pomocą komendy 
+
+`sudo cat /dev/ttyAMA0`
+
+![output](http://i.imgur.com/rgA8bmV.png)
+
 ### Kompilacja i uruchomienie
 ```
 gcc lcd.c -o lcd -lwiringPi -lwiringPiDev -lgps -lm
 ./lcd
 ```
+### GPS
+Długośc fali, 19,029 cm
+Częstotliwość 15.75,42MHz
 
 ### Przydatne linki
 
