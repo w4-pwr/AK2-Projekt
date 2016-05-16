@@ -142,9 +142,9 @@ void saveCoords(float lat, float lng){
 
 int main()
 {
-  	//inicjalizacja 
-    wiringPiSetup();
- 	lcd = initLCD();
+ 	//inicjalizacja 
+ 	wiringPiSetup();
+	lcd = initLCD();
  	startTracking();
-    getchar();
+	getchar();
 }
