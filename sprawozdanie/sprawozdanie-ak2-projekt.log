@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.4.8)  25 MAY 2016 00:23
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2016.4.8)  3 JUN 2016 18:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -579,36 +579,42 @@ LaTeX Font Info:    Try loading font information for OT4+cmtt on input line 71.
 (/usr/local/texlive/2015/texmf-dist/tex/latex/polski/ot4cmtt.fd
 File: ot4cmtt.fd 2008/02/24 v1.2.1 Font defs for fonts PL (MW)
 )
-<schemat-podlaczenia_schem.jpg, id=10, 406.318pt x 305.943pt>
+<gps.png, id=10, 529.98pt x 647.41875pt>
+File: gps.png Graphic file (type png)
+ <use gps.png>
+Package pdftex.def Info: gps.png used on input line 86.
+(pdftex.def)             Requested size: 290.22107pt x 354.53044pt.
+ [1]
+<schemat-podlaczenia_schem.jpg, id=20, 406.318pt x 305.943pt>
 File: schemat-podlaczenia_schem.jpg Graphic file (type jpg)
 
 <use schemat-podlaczenia_schem.jpg>
-Package pdftex.def Info: schemat-podlaczenia_schem.jpg used on input line 87.
+Package pdftex.def Info: schemat-podlaczenia_schem.jpg used on input line 93.
 (pdftex.def)             Requested size: 435.32422pt x 327.78523pt.
- [1]
-<schemat-podlaczenia_bb.jpg, id=19, 676.126pt x 527.571pt>
+ [2 <./gps.png>]
+<schemat-podlaczenia_bb.jpg, id=25, 676.126pt x 527.571pt>
 File: schemat-podlaczenia_bb.jpg Graphic file (type jpg)
 
 <use schemat-podlaczenia_bb.jpg>
-Package pdftex.def Info: schemat-podlaczenia_bb.jpg used on input line 94.
+Package pdftex.def Info: schemat-podlaczenia_bb.jpg used on input line 100.
 (pdftex.def)             Requested size: 435.32422pt x 339.68901pt.
- [2 <./schemat-podlaczenia_schem.jpg>] [3 <./schemat-podlaczenia_bb.jpg>] [4] <
-efekt1.jpg, id=29, 1927.2pt x 1084.05pt>
+ [3 <./schemat-podlaczenia_schem.jpg>] [4 <./schemat-podlaczenia_bb.jpg>] [5] <
+efekt1.jpg, id=35, 1927.2pt x 1084.05pt>
 File: efekt1.jpg Graphic file (type jpg)
 
 <use efekt1.jpg>
-Package pdftex.def Info: efekt1.jpg used on input line 222.
+Package pdftex.def Info: efekt1.jpg used on input line 225.
 (pdftex.def)             Requested size: 435.32422pt x 244.86012pt.
- [5 <./efekt1.jpg>] [6] (./sprawozdanie-ak2-projekt.aux)
+ [6] [7 <./efekt1.jpg>] [8] (./sprawozdanie-ak2-projekt.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 2646 strings out of 493089
- 37667 string characters out of 6134843
- 110726 words of memory out of 5000000
- 6066 multiletter control sequences out of 15000+600000
+ 2652 strings out of 493089
+ 37725 string characters out of 6134843
+ 109726 words of memory out of 5000000
+ 6070 multiletter control sequences out of 15000+600000
  14272 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  38i,5n,28p,935b,256s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -624,10 +630,10 @@ e/2015/texmf-dist/fonts/type1/public/pl/plr12.pfb></usr/local/texlive/2015/texm
 f-dist/fonts/type1/public/pl/plti10.pfb></usr/local/texlive/2015/texmf-dist/fon
 ts/type1/public/pl/plti12.pfb></usr/local/texlive/2015/texmf-dist/fonts/type1/p
 ublic/pl/pltt10.pfb>
-Output written on sprawozdanie-ak2-projekt.pdf (7 pages, 1512578 bytes).
+Output written on sprawozdanie-ak2-projekt.pdf (9 pages, 1594232 bytes).
 PDF statistics:
- 71 PDF objects out of 1000 (max. 8388607)
- 49 compressed objects within 1 object stream
+ 80 PDF objects out of 1000 (max. 8388607)
+ 54 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 

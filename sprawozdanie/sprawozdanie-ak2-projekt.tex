@@ -71,16 +71,22 @@
 		\begin{verbatim}
 		$GPGLL,2305.91626,N,12017.06438,E,064951.00,A,A*61
 		\end{verbatim}
-    \subsection{Odczyt danych z modułu GPS }
-    
-	   Po podłączeniu modułu lokalizacji do komputera Raspberry Pi poprzez złącze szeregowe możliwe jest odczytywanie danych w sposób analogiczny do czytania z pliku. W związku z tym użycie komendy bashowej:
+    \subsection{Odczyt danych z modułu GPS }    
+	   Po podłączeniu modułu lokalizacji do komputera Raspberry Pi poprzez złącze szeregowe możliwe jest odczytywanie danych w sposób analogiczny do czytania z pliku specjalnego. W związku z tym użycie komendy bashowej:
 	   	\begin{verbatim}
-	   	"cat /dev/ttyAMA0"
+	   	cat /dev/ttyAMA0
 	   	\end{verbatim} 
 	   	pozwoliło na wypisanie danych przesyłanych przez GPS na ekran konsoli. Odczyt pliku wymaga praw \textit{roota}.
 \section{Opis projektu}
 	\subsection{Wykonanie połączeń układu}
 		Pierwszym etapem prac było zapoznanie się z dokumentacją techniczną modułu lokalizacji. Po przeanalizowaniu odpowiednich wyprowadzeń rozpoczęto fizyczny montaż modułu do płytki prototypowej. Podczas wykonywania tych czynności napotkano techniczny problem wykonania połączeń lutowanych. Mały rozmiar wyprowadzeń oraz niestandardowy rozmiar uniemożliwił użycia jakiejkolwiek podstawki do zamocowania w płytce prototypowej. Konieczne było ręczne przylutowanie wyprowadzeń przy zastosowaniu precyzyjnej lutownicy. Sprzęt jakim dysponowano był nieodpowiedniej klasy i mocy, istniało ryzyko przegrzania i uszkodzenia układu. Problem został rozwiązany dzięki wykorzystaniu sprzętu Politechniki Wrocławskiej. Podłączenie kolejnych elementów układu nie sprawiło większych problemów. Poniżej przedstawione zostały schematy połączeń, oraz wizualizacja układu.
+			    
+			    \begin{figure}[H]
+			    	\centering
+			    	\includegraphics[width=0.6\linewidth]{gps}
+			    	\caption{Schemat układu GPS z dokumentacji}
+			    \end{figure}
+			    	    Układ GPS do poprawnego działania wymaga zasilania o napięciu +3.3v. Linię TXDA z GPS należy podłączyć do pinu RX na płytce Raspberry Pi, a RXDA (GPS) do TX (Raspberr Pi). Piny oznaczone NC nie wymagają żadnego podłączenia. Oprócz tego zalecane jest użycie antenty, którą należy podłączyć do pinu RF\_IN. W projekcie jako antena, został wykorzystany przewód o długości około ~10cm. Warto rozważyć podłączenie zasilania +3.3v do linii VBACKUP w celu zachowania informacji o ostatniej pozycji układu GPS w przypadku utraty zasilania. Po poprawnym podłączaniu w katalogu \texttt{/dev/} powinien pojawić się plik specjalny o nazwie \texttt{ttyAMA0} do którego zapisywane są informacje z GPS.
 		
 			\begin{figure}[H]
 				\centering
@@ -96,23 +102,20 @@
 			\end{figure}
 			
 	\subsection{Implementacja programu}
-		Do implementacji programu wykorzystano język C. W pierwszej kolejności oprogramowany został moduł wyświetlacza LCD. Wykorzystano bibliotekę udostępnioną dla komputerów Raspberry Pi - \textit{WiringPi}, a z niej moduł \textit{LCD}. Poniżej przedstawiona została funkcja inicjalizująca wyświetlacz.
+		Do implementacji programu wykorzystano język C. W pierwszej kolejności oprogramowany został moduł wyświetlacza LCD. Wykorzystano bibliotekę udostępnioną dla komputerów Raspberry Pi - \textit{WiringPi}, a z niej moduł LCD. Poniżej przedstawiona została funkcja inicjalizująca wyświetlacz.
 		\begin{verbatimtab}[4]
 	int initLCD(){
-		int lcd;
-		if (lcd = lcdInit (2, 16,4, LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7,0,0,0,0)){
+		int lcd = lcdInit (2, 16,4, LCD_RS, LCD_E, LCD_D4, LCD_D5, LCD_D6, LCD_D7,0,0,0,0);
+		if (lcd != 0){
 			printf ("Nie udana inicjalizacja LCD! \n");
 			return -1;
 		}
 		return lcd;
 	}
 		\end{verbatimtab}
-		Wyświetlacz LCD korzysta ze sterownika HD4460, który można obsługiwać przy pomocy 4 lub 8 pinów. 
-		
-		%TODO - rozpisac sie na 5-6 linijek o tym LCD. ale ejstem zbyt pijany na t.o hd4460 rulz 
-		
-		
-		Na podstawie dokumentacji zaimplementowano  funkcję do ekstrakcji danych z kodów \textit{NMEA}. Funkcja ta parsuje ciągi znaków wczytane ze wejścia szeregowego, do którego podłączony jest moduł GPS. Następnie odczytane współrzędne wypisywanie są na LCD:
+		Wyświetlacz LCD korzysta ze sterownika HD44780, który można obsługiwać przy pomocy 4 lub 8 pinów do transferu danych. W przypadku korzystania z biblioteki \texttt{WiringPi} wymagane jest podłączenie tylko 4 pinów DB7, DB6, DB5 oraz DB4, które zostały podłączone kolejno do GPIO24, GPIO23, GPIO18, GPIO25. Oprócz tego LCD\_Enable i LCD\_RegisterSelect, odpowiedzialne za poprawną komunikację układu z Raspbery Pi. LCD zasilane jest napięciem +5v.
+
+		Na podstawie dokumentacji zaimplementowano funkcję do ekstrakcji danych z kodów \textit{NMEA}. Funkcja ta parsuje ciągi znaków wczytane ze wejścia szeregowego, do którego podłączony jest moduł GPS. Następnie odczytane współrzędne wypisywanie są na LCD:
 		\begin{verbatimtab}[4]
 	void parseNmea(char Buffer[255])
 	{
@@ -224,7 +227,7 @@ int main()
 		\end{figure}
 \section{Podsumowanie}
 	Realizacja projektu pozwoliła na zapoznanie się z formatem kodów \textit{NMEA}. Mnogość zagadnień teoretycznych obejmujących odczyt danych z portu szeregowego, wydobywanie danych z \textit{NMEA} obsługę LCD jak również cześć praktyczna dotycząca lutowania i fizycznych połączeń była ciekawym i interesującym doświadczeniem. Najbardziej pouczające było szukanie przyczyn braku danych o lokalizacji, pomimo poprawnego podłączania modułu. W pierwszym momencie sądzono, że moduł został uszkodzony z powodu zbyt dużej temperatury podczas lutowania wyprowadzeń. Dołączenie anteny rozwiązało ten problem.
-
+\newpage
 	\begin{thebibliography}{999}
 		\bibitem{szpartan} 
 		{\em https://github.com/WiringPi/WiringPi}, \\
