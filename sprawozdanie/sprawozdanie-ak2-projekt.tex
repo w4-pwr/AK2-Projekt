@@ -76,7 +76,7 @@
 	   	\begin{verbatim}
 	   	cat /dev/ttyAMA0
 	   	\end{verbatim} 
-	   	pozwoliło na wypisanie danych przesyłanych przez GPS na ekran konsoli. Odczyt pliku wymaga praw \textit{roota}.
+	   	pozwoliło na wypisanie danych przesyłanych przez GPS na ekran konsoli. Odczyt pliku specjalnego wymaga praw \textit{roota}.
 \section{Opis projektu}
 	\subsection{Wykonanie połączeń układu}
 		Pierwszym etapem prac było zapoznanie się z dokumentacją techniczną modułu lokalizacji. Po przeanalizowaniu odpowiednich wyprowadzeń rozpoczęto fizyczny montaż modułu do płytki prototypowej. Podczas wykonywania tych czynności napotkano techniczny problem wykonania połączeń lutowanych. Mały rozmiar wyprowadzeń oraz niestandardowy rozmiar uniemożliwił użycia jakiejkolwiek podstawki do zamocowania w płytce prototypowej. Konieczne było ręczne przylutowanie wyprowadzeń przy zastosowaniu precyzyjnej lutownicy. Sprzęt jakim dysponowano był nieodpowiedniej klasy i mocy, istniało ryzyko przegrzania i uszkodzenia układu. Problem został rozwiązany dzięki wykorzystaniu sprzętu Politechniki Wrocławskiej. Podłączenie kolejnych elementów układu nie sprawiło większych problemów. Poniżej przedstawione zostały schematy połączeń, oraz wizualizacja układu.
@@ -158,7 +158,7 @@
 	}
 	\end{verbatimtab}
 	
-	Kolejnym fragmentem przygotowanego programu jest funkcja odczytująca dane z wejścia szeregowego, do którego podłączony został układ lokalizacji. Wykorzystano funkcję \textit{serialOpen} z biblioteki \textit{wiringSerial.h}. Odczyt danych przekazywanych przez GPS bazuje na czytaniu z pliku. Konieczne jest podanie ścieżki, oraz prędkości odczytu. Następnie następuje zapętlenie programu; kolejno pobierany jest odpowiedni kod \textit{NMEA} i wywoływana wspomniana wcześniej metoda odpowiedzialna za parsowanie kodu i wyświetlanie danych na LCD.
+	Kolejnym fragmentem przygotowanego programu jest funkcja odczytująca dane z wejścia szeregowego, do którego podłączony został układ lokalizacji. Wykorzystano funkcję \textit{serialOpen} z biblioteki \textit{wiringSerial.h}. Odczyt danych przekazywanych przez GPS bazuje na czytaniu z pliku specjalnego. Konieczne jest podanie ścieżki, oraz prędkości odczytu. Następnie następuje zapętlenie programu; kolejno pobierany jest odpowiedni kod \textit{NMEA} i wywoływana wspomniana wcześniej metoda odpowiedzialna za parsowanie kodu i wyświetlanie danych na LCD.
 	\begin{verbatimtab}[4]
 	void startTracking()
 	{
